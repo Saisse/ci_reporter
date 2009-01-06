@@ -6,7 +6,11 @@ namespace :ci do
   namespace :setup do
     task :testunit do
       rm_rf ENV["CI_REPORTS"] || "test/reports"
-      ENV["TESTOPTS"] = "#{ENV["TESTOPTS"]} #{File.dirname(__FILE__)}/test_unit_loader.rb"
+      loader_path = "#{File.dirname(__FILE__)}/test_unit_loader.rb"
+      if __FILE__.index(' ') != nil # for Windows Path with Space
+        loader_path = "\"#{loader_path}\""
+      end
+      ENV["TESTOPTS"] = "#{ENV["TESTOPTS"]} #{loader_path}"
     end
   end
 end
